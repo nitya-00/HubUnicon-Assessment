@@ -4,3 +4,4 @@ sqlalchemy
 psycopg[binary]
 email-validator
 pwdlib[argon2]
+pyjwt
