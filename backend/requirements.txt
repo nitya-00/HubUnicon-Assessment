@@ -2,3 +2,5 @@ fastapi
 uvicorn[standard]
 sqlalchemy
 psycopg[binary]
+email-validator
+pwdlib[argon2]
