@@ -1,7 +1,7 @@
-import EcommerceApp from "./EcommerceApp.jsx";
+import HubflowApp from "./hubflow/HubflowApp";
 
 function App() {
-  return <EcommerceApp />;
+  return <HubflowApp />;
 }
 
 export default App;
