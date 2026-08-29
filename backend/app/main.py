@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.routes.auth import router as auth_router
+from app.routes.contacts import router as contacts_router
 
 app = FastAPI(
     title="HubFlow Automation API",
@@ -8,6 +9,7 @@ app = FastAPI(
 )
 
 app.include_router(auth_router)
+app.include_router(contacts_router)
 
 
 @app.get("/")
