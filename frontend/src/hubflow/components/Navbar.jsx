@@ -56,11 +56,11 @@ function Navbar() {
         </div>
 
         {/* Contact Button */}
-        <a
-          href="#contact"
-          className="hidden rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800 md:block"
-        >
-          Let's Connect
+          <a
+            href="/dashboard"
+            className="hidden rounded-full bg-black px-5 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800 md:block"
+          >
+          Open Dashboard
         </a>
 
         {/* Mobile Menu Button */}

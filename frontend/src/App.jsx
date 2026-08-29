@@ -1,8 +1,10 @@
+import DashboardApp from "./dashboard/DashboardApp";
 import EcommerceApp from "./ecommerce/EcommerceApp";
 import HubflowApp from "./hubflow/HubFlowApp";
 import StripeApp from "./stripe/StripeApp";
 
 const applications = {
+  "/dashboard": DashboardApp,
   "/ecommerce": EcommerceApp,
   "/stripe": StripeApp,
 };

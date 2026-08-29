@@ -1,13 +1,11 @@
 # HubFlow Assessment
 
-This repository is a starter monorepo for the HubFlow assessment. It contains a frontend workspace, a backend service, database schema, documentation, and sample data for an e-commerce / Stripe-inspired product flow.
+HubFlow is a deployable React, FastAPI, PostgreSQL, and Redis assessment project. It includes the HubFlow landing page, e-commerce and Stripe-inspired showcase pages, plus a real authenticated HubFlow operations dashboard.
 
 ## Structure
 
 - frontend/
-  - hubflow/
-  - ecommerce/
-  - stripe-clone/
+  - src/ (HubFlow, e-commerce, Stripe, and dashboard routes)
 - backend/
   - src/
   - Dockerfile
@@ -25,13 +23,13 @@ This repository is a starter monorepo for the HubFlow assessment. It contains a 
 
 ## Getting started
 
-1. Copy `.env.example` to `.env` and update values.
+1. Copy `backend/.env.example` to `backend/.env` and update values.
 2. Start the stack with Docker Compose:
    ```bash
    docker compose up --build
    ```
-3. Open the frontend apps and backend API according to your local ports.
+3. Open `http://localhost:8080` for the site and `http://localhost:8000/docs` for API documentation.
 
 ## Notes
 
-This scaffold is intentionally lightweight and ready for expansion into your full product implementation.
+Frontend routes: `/hubflow`, `/dashboard`, `/ecommerce`, and `/stripe`.

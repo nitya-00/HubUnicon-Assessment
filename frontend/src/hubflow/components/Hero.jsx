@@ -36,10 +36,10 @@ function Hero() {
           <div className="flex items-start lg:justify-end">
 
             <a
-              href="#contact"
+              href="/dashboard"
               className="group flex items-center gap-4 rounded-full bg-black px-7 py-4 text-white"
             >
-              Start a Project
+              Open Workspace
 
               <span className="transition-transform group-hover:translate-x-1">
                 →
