@@ -36,6 +36,9 @@ Copy `.env.example` to `.env` and set `DATABASE_URL` and `JWT_SECRET`. `.env` is
 | POST/GET | `/api/contacts` | Bearer | Create/list CRM contacts |
 | POST/GET | `/api/campaigns` | Bearer | Create/list campaigns |
 | GET | `/api/dashboard/stats` | Bearer | Cached dashboard counts |
+| GET | `/api/billing/plans` | No | Available subscription plans |
+| POST | `/api/billing/subscriptions` | Bearer | Create a subscription and pending payment record |
+| GET | `/api/billing/subscriptions/me` | Bearer | Current user's latest subscription |
 
 ## Architecture
 

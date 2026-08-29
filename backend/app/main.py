@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import FRONTEND_URL
 from app.routes.auth import router as auth_router
+from app.routes.billing import router as billing_router
 from app.routes.campaigns import router as campaigns_router
 from app.routes.contacts import router as contacts_router
 from app.routes.dashboard import router as dashboard_router
@@ -21,6 +22,7 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+app.include_router(billing_router)
 app.include_router(contacts_router)
 app.include_router(campaigns_router)
 app.include_router(dashboard_router)
