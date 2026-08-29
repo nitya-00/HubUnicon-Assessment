@@ -1,22 +1,42 @@
 {
   "info": {
     "name": "HubFlow API",
+    "description": "Assessment collection. Register, then login to populate access_token manually.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "variable": [
+    {"key": "base_url", "value": "http://localhost:8080/api"},
+    {"key": "access_token", "value": ""},
+    {"key": "contact_id", "value": "1"},
+    {"key": "campaign_id", "value": "1"}
+  ],
   "item": [
-    {
-      "name": "Health Check",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "http://localhost:3001/api/health",
-          "protocol": "http",
-          "host": ["localhost"],
-          "port": "3001",
-          "path": ["api", "health"]
-        }
-      }
-    }
+    {"name": "Health", "request": {"method": "GET", "url": "{{base_url}}/health"}},
+    {"name": "Register", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"full_name\": \"Postman User\",\n  \"email\": \"postman@example.com\",\n  \"password\": \"secure-password\"\n}"}, "url": "{{base_url}}/auth/register"}},
+    {"name": "Login", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"email\": \"postman@example.com\",\n  \"password\": \"secure-password\"\n}"}, "url": "{{base_url}}/auth/login"}},
+    {"name": "Me", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/auth/me"}},
+    {"name": "Contacts", "item": [
+      {"name": "List", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/contacts"}},
+      {"name": "Create", "request": {"method": "POST", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}, {"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"first_name\": \"Ada\", \"last_name\": \"Lovelace\", \"email\": \"ada@example.com\", \"company\": \"Analytical\"}"}, "url": "{{base_url}}/contacts"}},
+      {"name": "Get", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/contacts/{{contact_id}}"}},
+      {"name": "Update", "request": {"method": "PUT", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}, {"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"first_name\": \"Ada\", \"last_name\": \"Lovelace\", \"email\": \"ada@example.com\", \"phone\": \"123\", \"company\": \"Analytical\"}"}, "url": "{{base_url}}/contacts/{{contact_id}}"}},
+      {"name": "Delete", "request": {"method": "DELETE", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/contacts/{{contact_id}}"}},
+      {"name": "CSV import", "request": {"method": "POST", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "body": {"mode": "formdata", "formdata": [{"key": "file", "type": "file", "src": "sample-data/contacts.csv"}]}, "url": "{{base_url}}/contacts/upload"}}
+    ]},
+    {"name": "Campaigns", "item": [
+      {"name": "List", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/campaigns"}},
+      {"name": "Create", "request": {"method": "POST", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}, {"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"name\": \"Welcome campaign\", \"status\": \"draft\", \"contact_ids\": [{{contact_id}}]}"}, "url": "{{base_url}}/campaigns"}},
+      {"name": "Get", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/campaigns/{{campaign_id}}"}},
+      {"name": "Update", "request": {"method": "PUT", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}, {"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"status\": \"scheduled\"}"}, "url": "{{base_url}}/campaigns/{{campaign_id}}"}},
+      {"name": "Campaign contacts", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/campaigns/{{campaign_id}}/contacts"}},
+      {"name": "Add campaign contact", "request": {"method": "POST", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/campaigns/{{campaign_id}}/contacts/{{contact_id}}"}},
+      {"name": "Remove campaign contact", "request": {"method": "DELETE", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/campaigns/{{campaign_id}}/contacts/{{contact_id}}"}},
+      {"name": "Delete", "request": {"method": "DELETE", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/campaigns/{{campaign_id}}"}}
+    ]},
+    {"name": "Dashboard stats", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/dashboard/stats"}},
+    {"name": "Campaign report", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/reports/campaigns"}},
+    {"name": "Billing plans", "request": {"method": "GET", "url": "{{base_url}}/billing/plans"}},
+    {"name": "Subscribe", "request": {"method": "POST", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}, {"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\"plan_id\": 1}"}, "url": "{{base_url}}/billing/subscriptions"}},
+    {"name": "My subscription", "request": {"method": "GET", "header": [{"key": "Authorization", "value": "Bearer {{access_token}}"}], "url": "{{base_url}}/billing/subscriptions/me"}}
   ]
 }

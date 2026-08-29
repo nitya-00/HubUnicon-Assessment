@@ -23,7 +23,7 @@ def get_cached_json(key: str) -> dict | None:
 
 def set_cached_json(key: str, value: dict) -> None:
     try:
-        redis_client.setex(key, CACHE_TTL_SECONDS, json.dumps(value))
+        redis_client.set(key, json.dumps(value), ex=CACHE_TTL_SECONDS)
     except RedisError:
         pass
 
