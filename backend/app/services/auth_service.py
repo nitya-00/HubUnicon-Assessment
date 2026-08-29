@@ -28,7 +28,7 @@ def register_user(db: Session, request: RegisterRequest) -> User:
     db.add(user)
     db.commit()
     db.refresh(user)
-    invalidate_dashboard_stats()
+    invalidate_dashboard_stats(user.id)
 
     return user
 

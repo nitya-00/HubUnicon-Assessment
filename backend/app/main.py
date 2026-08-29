@@ -7,6 +7,7 @@ from app.routes.billing import router as billing_router
 from app.routes.campaigns import router as campaigns_router
 from app.routes.contacts import router as contacts_router
 from app.routes.dashboard import router as dashboard_router
+from app.routes.reports import router as reports_router
 
 app = FastAPI(
     title="HubFlow Automation API",
@@ -26,6 +27,7 @@ app.include_router(billing_router)
 app.include_router(contacts_router)
 app.include_router(campaigns_router)
 app.include_router(dashboard_router)
+app.include_router(reports_router)
 
 
 @app.get("/")

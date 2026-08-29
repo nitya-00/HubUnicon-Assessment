@@ -8,3 +8,4 @@ pyjwt
 redis
 pytest
 httpx2
+python-multipart

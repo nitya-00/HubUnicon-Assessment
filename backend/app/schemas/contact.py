@@ -11,10 +11,21 @@ class ContactCreate(BaseModel):
     company: str | None = Field(default=None, max_length=255)
 
 
+class ContactUpdate(ContactCreate):
+    pass
+
+
 class ContactResponse(ContactCreate):
     id: int
-    created_at: datetime | None
+    created_at: datetime
 
     model_config = {
         "from_attributes": True,
     }
+
+
+class ContactImportResult(BaseModel):
+    imported: int
+    skipped_duplicates: int
+    invalid_rows: int
+    errors: list[str]

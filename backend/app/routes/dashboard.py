@@ -16,6 +16,6 @@ router = APIRouter(
 @router.get("/stats", response_model=DashboardStats)
 def read_stats(
     db: Session = Depends(get_db),
-    _: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
 ) -> DashboardStats:
-    return get_dashboard_stats(db)
+    return get_dashboard_stats(db, current_user)

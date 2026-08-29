@@ -11,13 +11,18 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS contacts (
   id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   first_name VARCHAR(100),
   last_name VARCHAR(100),
   email VARCHAR(255),
   phone VARCHAR(50),
   company VARCHAR(255),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX IF NOT EXISTS idx_contacts_user_id ON contacts(user_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_contacts_user_email
+  ON contacts(user_id, email) WHERE email IS NOT NULL;
 
 CREATE TABLE IF NOT EXISTS products (
   id SERIAL PRIMARY KEY,
@@ -29,11 +34,26 @@ CREATE TABLE IF NOT EXISTS products (
 
 CREATE TABLE IF NOT EXISTS campaigns (
   id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   name VARCHAR(255) NOT NULL,
   status VARCHAR(32) NOT NULL DEFAULT 'draft',
   audience_size INTEGER NOT NULL DEFAULT 0,
+  messages_sent INTEGER NOT NULL DEFAULT 0,
+  converted_contacts INTEGER NOT NULL DEFAULT 0,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX IF NOT EXISTS idx_campaigns_user_id ON campaigns(user_id);
+
+CREATE TABLE IF NOT EXISTS campaign_contacts (
+  campaign_id INTEGER NOT NULL REFERENCES campaigns(id) ON DELETE CASCADE,
+  contact_id INTEGER NOT NULL REFERENCES contacts(id) ON DELETE CASCADE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (campaign_id, contact_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_campaign_contacts_contact_id
+  ON campaign_contacts(contact_id);
 
 CREATE TABLE IF NOT EXISTS plans (
   id SERIAL PRIMARY KEY,
@@ -51,6 +71,8 @@ CREATE TABLE IF NOT EXISTS subscriptions (
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id);
+
 CREATE TABLE IF NOT EXISTS payments (
   id SERIAL PRIMARY KEY,
   subscription_id INTEGER NOT NULL REFERENCES subscriptions(id) ON DELETE CASCADE,
@@ -58,6 +80,8 @@ CREATE TABLE IF NOT EXISTS payments (
   status VARCHAR(32) NOT NULL DEFAULT 'pending',
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE INDEX IF NOT EXISTS idx_payments_subscription_id ON payments(subscription_id);
 
 INSERT INTO plans (name, price, description)
 VALUES
