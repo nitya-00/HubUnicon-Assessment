@@ -21,37 +21,30 @@ services:
     container_name: hubflow-backend
     restart: unless-stopped
     env_file:
-      - .env
+      - ./backend/.env
     depends_on:
       - db
+      - redis
+    environment:
+      DATABASE_URL: postgresql+psycopg://hubflow:hubflow@db:5432/hubflow
+      REDIS_URL: redis://redis:6379/0
     ports:
-      - "3001:3001"
-    volumes:
-      - ./backend:/app
+      - "8000:8000"
 
-  frontend-hubflow:
-    build:
-      context: ./frontend/hubflow
-    container_name: hubflow-frontend-hubflow
+  redis:
+    image: redis:7-alpine
+    container_name: hubflow-redis
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "6379:6379"
 
-  frontend-ecommerce:
+  frontend:
     build:
-      context: ./frontend/ecommerce
-    container_name: hubflow-frontend-ecommerce
+      context: ./frontend
+    container_name: hubflow-frontend
     restart: unless-stopped
     ports:
-      - "3002:3000"
-
-  frontend-stripe-clone:
-    build:
-      context: ./frontend/stripe-clone
-    container_name: hubflow-frontend-stripe-clone
-    restart: unless-stopped
-    ports:
-      - "3003:3000"
+      - "5173:5173"
 
 volumes:
   postgres-data:

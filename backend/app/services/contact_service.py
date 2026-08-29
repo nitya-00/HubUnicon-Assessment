@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.models.contact import Contact
 from app.schemas.contact import ContactCreate
+from app.services.dashboard_service import invalidate_dashboard_stats
 
 
 def create_contact(db: Session, request: ContactCreate) -> Contact:
@@ -10,6 +11,7 @@ def create_contact(db: Session, request: ContactCreate) -> Contact:
     db.add(contact)
     db.commit()
     db.refresh(contact)
+    invalidate_dashboard_stats()
 
     return contact
 

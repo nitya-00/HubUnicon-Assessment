@@ -8,6 +8,7 @@ from app.core.security import (
 )
 from app.models.user import User
 from app.schemas.auth import LoginRequest, RegisterRequest
+from app.services.dashboard_service import invalidate_dashboard_stats
 
 
 def register_user(db: Session, request: RegisterRequest) -> User:
@@ -27,6 +28,7 @@ def register_user(db: Session, request: RegisterRequest) -> User:
     db.add(user)
     db.commit()
     db.refresh(user)
+    invalidate_dashboard_stats()
 
     return user
 
