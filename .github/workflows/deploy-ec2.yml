@@ -1,0 +1,29 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deploy the checked-out revision over SSH
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            cd "${{ secrets.EC2_APP_PATH }}"
+            git fetch origin main
+            git checkout main
+            git pull --ff-only origin main
+            docker compose -f docker-compose.yml -f docker-compose.production.yml up -d --build --remove-orphans
+            docker image prune -f

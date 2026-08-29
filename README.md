@@ -15,6 +15,7 @@ HubFlow is a React, FastAPI, PostgreSQL, and Redis application demonstrating a l
 - [ER diagram and indexing strategy](docs/er-diagram.md)
 - [Proposed AWS production architecture](docs/aws-architecture.md)
 - [Deployment guide](docs/deployment.md)
+- [EC2 deployment guide](docs/ec2-deployment.md)
 - [API reference](docs/api.md)
 - [Postman collection](postman/hubflow.json)
 - [Sample contacts CSV](sample-data/contacts.csv)

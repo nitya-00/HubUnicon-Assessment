@@ -1,0 +1,5 @@
+services:
+  # The frontend Nginx service reaches FastAPI on the Docker network. The host
+  # does not need a public backend port in production.
+  backend:
+    ports: !reset []
