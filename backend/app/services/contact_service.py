@@ -1,6 +1,7 @@
-from sqlalchemy import delete, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
+from app.models.campaign import Campaign
 from app.models.campaign_contact import CampaignContact
 from app.models.contact import Contact
 from app.models.user import User
@@ -81,7 +82,23 @@ def delete_contact(db: Session, user: User, contact_id: int) -> bool:
     contact = _contact_for_user(db, user, contact_id)
     if contact is None:
         return False
+    affected_campaigns = list(
+        db.scalars(
+            select(Campaign)
+            .join(CampaignContact, CampaignContact.campaign_id == Campaign.id)
+            .where(
+                CampaignContact.contact_id == contact.id,
+                Campaign.user_id == user.id,
+            )
+        ).all()
+    )
     db.execute(delete(CampaignContact).where(CampaignContact.contact_id == contact.id))
+    for campaign in affected_campaigns:
+        campaign.audience_size = db.scalar(
+            select(func.count())
+            .select_from(CampaignContact)
+            .where(CampaignContact.campaign_id == campaign.id)
+        ) or 0
     db.delete(contact)
     db.commit()
     invalidate_dashboard_stats(user.id)

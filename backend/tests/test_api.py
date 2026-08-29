@@ -146,3 +146,17 @@ def test_campaign_report_is_scoped_to_current_user(client):
     report = client.get("/api/reports/campaigns", headers=owner)
     assert report.status_code == 200
     assert [item["campaign_name"] for item in report.json()["campaigns"]] == ["Owner report"]
+
+
+def test_deleting_contact_refreshes_campaign_audience_size(client):
+    headers = register_and_login(client, "audience@example.com", "Audience Owner")
+    contact = create_contact(client, headers, "audience-contact@example.com")
+    campaign = client.post(
+        "/api/campaigns",
+        headers=headers,
+        json={"name": "Audience campaign", "contact_ids": [contact["id"]]},
+    ).json()
+    assert client.delete(f"/api/contacts/{contact['id']}", headers=headers).status_code == 204
+    refreshed = client.get(f"/api/campaigns/{campaign['id']}", headers=headers)
+    assert refreshed.status_code == 200
+    assert refreshed.json()["audience_size"] == 0

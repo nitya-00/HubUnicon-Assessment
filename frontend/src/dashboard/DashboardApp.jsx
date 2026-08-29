@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import AuthPage from "./AuthPage";
 import { api, ApiError } from "../lib/api";
 
-const emptyStats = { user_count: 0, contact_count: 0, campaign_count: 0 };
+const emptyStats = { contact_count: 0, active_campaign_count: 0, messages_sent: 0 };
 
 function DashboardApp() {
   const [token, setToken] = useState(() => window.localStorage.getItem("hubflow_access_token"));
@@ -110,9 +110,9 @@ function DashboardApp() {
   if (!token) return <AuthPage onAuthenticated={authenticated} />;
 
   const statCards = [
-    ["Workspace users", stats.user_count, "Accounts connected to HubFlow"],
     ["CRM contacts", stats.contact_count, "Leads in your active system"],
-    ["Campaigns", stats.campaign_count, "Automation campaigns created"],
+    ["Active campaigns", stats.active_campaign_count, "Campaigns ready or already sent"],
+    ["Messages sent", stats.messages_sent, "Recorded campaign delivery activity"],
   ];
 
   return (
@@ -126,7 +126,7 @@ function DashboardApp() {
 
       <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8">
         <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
-          <div><p className="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-600">Operations dashboard</p><h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">Your system, in motion.</h1><p className="mt-3 max-w-2xl text-slate-600">A real workspace powered by FastAPI, PostgreSQL, JWT authentication, and Redis-ready dashboard caching.</p></div>
+          <div><p className="text-sm font-semibold uppercase tracking-[0.2em] text-indigo-600">Operations dashboard</p><h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">Your system, in motion.</h1><p className="mt-3 max-w-2xl text-slate-600">A real workspace powered by FastAPI, PostgreSQL, JWT authentication, and user-scoped Redis dashboard caching.</p></div>
           <button onClick={() => loadWorkspace()} className="rounded-full bg-slate-900 px-5 py-3 text-sm font-medium text-white hover:bg-slate-700">Refresh data</button>
         </div>
 

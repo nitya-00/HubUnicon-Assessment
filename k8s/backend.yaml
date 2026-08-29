@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hubflow-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hubflow-backend
+  template:
+    metadata:
+      labels:
+        app: hubflow-backend
+    spec:
+      containers:
+        - name: backend
+          image: registry.example.com/hubflow-backend:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: hubflow-config
+            - secretRef:
+                name: hubflow-secrets
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hubflow-backend
+spec:
+  selector:
+    app: hubflow-backend
+  ports:
+    - port: 8000
+      targetPort: 8000
