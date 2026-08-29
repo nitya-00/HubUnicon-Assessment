@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: hubflow-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: hubflow
+      POSTGRES_USER: hubflow
+      POSTGRES_PASSWORD: hubflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+
+  backend:
+    build:
+      context: ./backend
+    container_name: hubflow-backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+
+  frontend-hubflow:
+    build:
+      context: ./frontend/hubflow
+    container_name: hubflow-frontend-hubflow
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+
+  frontend-ecommerce:
+    build:
+      context: ./frontend/ecommerce
+    container_name: hubflow-frontend-ecommerce
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+
+  frontend-stripe-clone:
+    build:
+      context: ./frontend/stripe-clone
+    container_name: hubflow-frontend-stripe-clone
+    restart: unless-stopped
+    ports:
+      - "3003:3000"
+
+volumes:
+  postgres-data:
