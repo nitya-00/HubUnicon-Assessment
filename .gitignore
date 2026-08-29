@@ -22,6 +22,10 @@ pnpm-debug.log*
 .env.*
 !.env.example
 
+# Python cache files
+__pycache__/
+*.py[cod]
+
 # OS/editor files
 .DS_Store
 Thumbs.db
