@@ -1,22 +1,16 @@
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Features from './components/Features';
-import Workflow from './components/WhyHubFlow';
-import Pricing from './components/Pricing';
-import Testimonials from './components/Testimonials';
-import CTA from './components/CTA';
 import Footer from './components/Footer';
+import Process from './components/Process';
+import WhyHubFlow from './components/WhyHubFlow';
 
 function App() {
   return (
-    <div className="page-shell">
+    <div className="min-h-screen bg-[#f5f5f0] text-black">
       <Navbar />
       <Hero />
-      <Features />
-      <Workflow />
-      <Pricing />
-      <Testimonials />
-      <CTA />
+      <WhyHubFlow />
+      <Process />
       <Footer />
     </div>
   );
